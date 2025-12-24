@@ -18,21 +18,23 @@ INCLUDE_FIELDS_TO_TAKE = os.getenv("INCLUDE_FIELDS_TO_TAKE").split(FIELDS_SEPARA
 issues = jira.takeTasks(API_KEY_JR, DOMAIN_JR, PROJECT_JR, FIELDS_TO_TAKE, INCLUDE_FIELDS_TO_TAKE)
 taskNames = jira.takeTaskNames(issues)
 
+jira.showTasksCount(issues)
 jira.showTasks(issues)
-jira.showTaskNames(taskNames)
 
 #================# SeaTable #================#
+
 API_KEY_ST = os.getenv("API_KEY_ST")
 EXP = os.getenv("EXP")
 DOMAIN_ST = os.getenv("DOMAIN_ST")
 TABLE_NAME = os.getenv("TABLE_NAME")
+COLUMNS_SEPARATOR = os.getenv("COLUMNS_SEPARATOR")
+COLUMNS_TO_FILL = os.getenv("COLUMNS_TO_FILL").split(COLUMNS_SEPARATOR)
 
 BASE_TOKEN, BASE_UUID = seatable.generateBaseToken(API_KEY_ST, EXP, DOMAIN_ST)
 seatable.showBaseTokenAndBaseUUID(BASE_TOKEN, BASE_UUID)
 
-seatableColumns = seatable.getColumns(BASE_TOKEN, BASE_UUID, DOMAIN_ST, TABLE_NAME)
-
 issuesToUpdate, issuesToAdd = seatable.statusRows(BASE_TOKEN, BASE_UUID, DOMAIN_ST, TABLE_NAME, taskNames)
 seatable.showResultOfStatusRows(issuesToUpdate, issuesToAdd)
 
-seatable.updateTasks(issuesToUpdate, issues)
+seatable.updateTasks(BASE_TOKEN, BASE_UUID, DOMAIN_ST, TABLE_NAME, issuesToUpdate, issues, COLUMNS_TO_FILL)
+seatable.addTasks(BASE_TOKEN, BASE_UUID, DOMAIN_ST, TABLE_NAME, issuesToAdd, issues, COLUMNS_TO_FILL)

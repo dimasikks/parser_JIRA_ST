@@ -45,14 +45,11 @@ def showTasks(issues):
     i = 0
     for issue in issues:
         i+=1
-        print(f"Issue {i}")
+        print(f"""{issue["summary"]}""")
         for key, value in issue.items():
             print(f"{key}: {value}")
         print("\n")
 
-def showTaskNames(taskNames):
-    i = 0
-    for taskName in taskNames:
-        i+=1
-        print(f"{i} task: {taskName}")
-    print("\n")
+def showTasksCount(issues):
+    print(f"Received {len(issues)} tasks\n")
+    
